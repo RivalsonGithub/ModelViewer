@@ -6,6 +6,12 @@
   <title>Modern Website</title>
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    .box { display: flex; }
+    model-viewer { width: 800px; height: 600px; margin:0, auto; }
+  </style>
+
 </head>
 <body>
   <!-- <header>
@@ -26,13 +32,42 @@
 
   <section id="3dView">
     <div>P&DA Blind Folded Angel</div>
-    <div>
-        <model-viewer src="head6_bake.glb" camera-controls auto-rotate></model-viewer>
-
-        <button slot="ar-button" style="background-color: white; border-radius: 4px; border: none; position: absolute; top: 16px; right: 16px; ">
-          👋 Activate AR
-      </button>
-    </div>
+    <div class="box">
+      <div>P&DA Blind Folded Angel</div>
+      <div>
+          <model-viewer id="model-viewer" src="head6_bake.glb" ar ar-modes="scene-viewer quick-look" camera-controls touch-action="pan-y" alt="A 3D model of an astronaut" shadow-intensity="2" auto-rotate disable-pan skybox-image="" skybox-height="2m" max-camera-orbit="auto 90deg auto">
+              <div id="error" class="hide">AR is not supported on this device</div>
+            </model-viewer>
+            <script>
+              document.querySelector("#model-viewer").addEventListener('ar-status', (event) => {
+                if(event.detail.status === 'failed'){
+                  const error = document.querySelector("#error");
+                  error.classList.remove('hide');
+                  error.addEventListener('transitionend',(event) => {
+                    error.classList.add('hide');
+                  });
+                }
+              });
+            </script>
+            <style>
+              #error {
+                background-color: #ffffffdd;
+                border-radius: 16px;
+                padding: 16px;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate3d(-50%, -50%, 0);
+                transition: opacity 0.3s;
+              }
+              #error.hide {
+                opacity: 0;
+                visibility: hidden;
+                transition: visibility 2s, opacity 1s 1s;
+              }
+            </style>
+      </div>
+  </div>
   </section>
 
   <section id="about" class="about">
