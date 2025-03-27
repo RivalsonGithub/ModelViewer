@@ -283,6 +283,73 @@
                 <p class="cta-text">Direct pre-orders available now through our secure store.</p>
                 <button class="cta-button" onclick="window.open('https://pnda-drop.square.site/', '_blank')">Pre-Order Now</button>
             </div>
+
+
+            <!-- Add this right after the cta-box div -->
+<div class="qr-section">
+    <h3 class="qr-title">SCAN TO VISIT THIS PAGE ON MOBILE</h3>
+    <div class="qr-container">
+        <img src="blindfoldedangelsite_qr_code.png" alt="P&DA Store QR Code" class="qr-image">
+    </div>
+    <p class="qr-note">or visit: <span class="qr-link">https://rivalsongithub.github.io/ModelViewer/</span></p>
+</div>
+
+<!-- Add this CSS to your style section -->
+<style>
+    .qr-section {
+        text-align: center;
+        margin-top: 2rem;
+        padding: 2rem;
+        border-top: 1px solid var(--gray-mid);
+    }
+    
+    .qr-title {
+        font-size: 0.9rem;
+        letter-spacing: 0.2rem;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+        font-weight: 400;
+        color: var(--gray-dark);
+    }
+    
+    .qr-container {
+        background: var(--white);
+        border: 1px solid var(--gray-mid);
+        border-radius: 12px;
+        padding: 1.5rem;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+    
+    .qr-image {
+        width: 180px;
+        height: 180px;
+        object-fit: contain;
+        border-radius: 8px;
+    }
+    
+    .qr-note {
+        font-size: 0.8rem;
+        color: var(--gray-dark);
+        letter-spacing: 0.05rem;
+    }
+    
+    .qr-link {
+        font-weight: 400;
+        color: var(--black);
+    }
+    
+    @media (max-width: 480px) {
+        .qr-container {
+            padding: 1rem;
+        }
+        
+        .qr-image {
+            width: 150px;
+            height: 150px;
+        }
+    }
+</style>
         </section>
     </div>
 
