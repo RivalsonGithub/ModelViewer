@@ -206,6 +206,50 @@
             transition: opacity 0.3s;
         }
         
+        /* QR Code Section */
+        .qr-section {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 2rem;
+            border-top: 1px solid var(--gray-mid);
+        }
+        
+        .qr-title {
+            font-size: 0.9rem;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            color: var(--gray-dark);
+        }
+        
+        .qr-container {
+            background: var(--white);
+            border: 1px solid var(--gray-mid);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .qr-image {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        .qr-note {
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+            letter-spacing: 0.05rem;
+        }
+        
+        .qr-link {
+            font-weight: 400;
+            color: var(--black);
+        }
+        
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .container {
@@ -225,19 +269,31 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        @media (max-width: 480px) {
+            .qr-container {
+                padding: 1rem;
+            }
+            
+            .qr-image {
+                width: 150px;
+                height: 150px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="header">
             <h1 class="title">P&DA</h1>
-            <p class="subtitle">Blindfolded Angel · 3D Model Viewer</p>
+            <p class="subtitle">Blindfolded Angel · 3D Model Viewer </p>
         </header>
         
         <div class="model-viewer-container">
             <model-viewer 
                 id="model-viewer" 
-                src="chainDoll_edited_GLB.glb" 
+                src="chainDoll_edited_GLB.glb"
+                ios-src="chainDoll_edited_USDZ.usdz"
                 ar 
                 ar-modes="scene-viewer quick-look" 
                 camera-controls 
@@ -284,72 +340,13 @@
                 <button class="cta-button" onclick="window.open('https://pnda-drop.square.site/', '_blank')">Pre-Order Now</button>
             </div>
 
-
-            <!-- Add this right after the cta-box div -->
-<div class="qr-section">
-    <h3 class="qr-title">SCAN TO VISIT THIS PAGE ON MOBILE</h3>
-    <div class="qr-container">
-        <img src="blindfoldedangelsite_qr_code.png" alt="P&DA Store QR Code" class="qr-image">
-    </div>
-    <p class="qr-note">or visit: <span class="qr-link">https://rivalsongithub.github.io/ModelViewer/</span></p>
-</div>
-
-<!-- Add this CSS to your style section -->
-<style>
-    .qr-section {
-        text-align: center;
-        margin-top: 2rem;
-        padding: 2rem;
-        border-top: 1px solid var(--gray-mid);
-    }
-    
-    .qr-title {
-        font-size: 0.9rem;
-        letter-spacing: 0.2rem;
-        text-transform: uppercase;
-        margin-bottom: 1.5rem;
-        font-weight: 400;
-        color: var(--gray-dark);
-    }
-    
-    .qr-container {
-        background: var(--white);
-        border: 1px solid var(--gray-mid);
-        border-radius: 12px;
-        padding: 1.5rem;
-        display: inline-block;
-        margin-bottom: 1rem;
-    }
-    
-    .qr-image {
-        width: 180px;
-        height: 180px;
-        object-fit: contain;
-        border-radius: 8px;
-    }
-    
-    .qr-note {
-        font-size: 0.8rem;
-        color: var(--gray-dark);
-        letter-spacing: 0.05rem;
-    }
-    
-    .qr-link {
-        font-weight: 400;
-        color: var(--black);
-    }
-    
-    @media (max-width: 480px) {
-        .qr-container {
-            padding: 1rem;
-        }
-        
-        .qr-image {
-            width: 150px;
-            height: 150px;
-        }
-    }
-</style>
+            <div class="qr-section">
+                <h3 class="qr-title">SCAN TO VISIT THIS PAGE ON MOBILE</h3>
+                <div class="qr-container">
+                    <img src="blindfoldedangelsite_qr_code.png" alt="P&DA Store QR Code" class="qr-image">
+                </div>
+                <p class="qr-note">or visit: <span class="qr-link">https://rivalsongithub.github.io/ModelViewer/</span></p>
+            </div>
         </section>
     </div>
 
@@ -357,14 +354,33 @@
         const modelViewer = document.querySelector("#model-viewer");
         const errorElement = document.querySelector("#error");
         
+        // Detect iOS devices
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        
         modelViewer.addEventListener('ar-status', (event) => {
             if (event.detail.status === 'failed') {
+                if (isIOS) {
+                    errorElement.textContent = "For best AR experience on iOS, tap the AR icon above";
+                } else {
+                    errorElement.textContent = "AR is not supported on this device";
+                }
                 errorElement.classList.add('show');
                 setTimeout(() => {
                     errorElement.classList.remove('show');
                 }, 3000);
             }
         });
+        
+        // Optimize for iOS AR experience
+        if (isIOS) {
+            modelViewer.setAttribute('quick-look-browsers', 'safari chrome');
+            
+            // Optional: Add a small delay for iOS devices to ensure USDZ loads properly
+            setTimeout(() => {
+                modelViewer.dismissPoster();
+            }, 500);
+        }
     </script>
 </body>
 </html>
